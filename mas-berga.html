@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAS BERGA – Masyarakat Bersama Puskesmas Kebonsari, Tuban</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a8f5e;
+    --green-light: #25b07a;
+    --green-dark: #0f5c3d;
+    --green-xlight: #e8f7f1;
+    --blue: #3b9eca;
+    --blue-light: #d0edf9;
+    --blue-dark: #1e6a8e;
+    --white: #ffffff;
+    --off-white: #f5faf8;
+    --gray-100: #eef3f1;
+    --gray-200: #d4e2db;
+    --gray-600: #557068;
+    --gray-800: #1f3028;
+    --shadow-sm: 0 2px 8px rgba(26,143,94,0.08);
+    --shadow-md: 0 8px 32px rgba(26,143,94,0.13);
+    --shadow-lg: 0 20px 60px rgba(26,143,94,0.16);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-xl: 28px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--white);
+    color: var(--gray-800);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 6vw;
+    height: 68px;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--gray-200);
+    transition: box-shadow .3s;
+  }
+  nav.scrolled { box-shadow: var(--shadow-md); }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 800; font-size: 1.15rem; color: var(--green-dark); text-decoration: none;
+  }
+  .nav-logo .logo-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--green), var(--blue));
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-logo .logo-icon svg { width: 22px; height: 22px; }
+
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    font-size: .9rem; font-weight: 500; color: var(--gray-600);
+    text-decoration: none; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+
+  .nav-cta {
+    background: var(--green); color: #fff; border: none;
+    padding: 10px 22px; border-radius: 50px;
+    font-family: inherit; font-size: .9rem; font-weight: 600;
+    cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--green-dark); border-radius: 2px; transition: .3s; }
+
+  /* ─── HERO ─────────────────────────────────────── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 100px 6vw 60px;
+    position: relative; overflow: hidden;
+    background: linear-gradient(150deg, #f0faf5 0%, #e7f5f0 40%, #dceef9 100%);
+  }
+
+  .hero-blob {
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: .5; pointer-events: none;
+  }
+  .blob-1 { width: 520px; height: 520px; background: #b7e9d4; top: -120px; right: -80px; }
+  .blob-2 { width: 360px; height: 360px; background: #c3dff5; bottom: -60px; left: 10%; }
+  .blob-3 { width: 220px; height: 220px; background: #a8e4c8; top: 40%; right: 15%; }
+
+  .hero-inner {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 60px;
+    max-width: 1180px; margin: 0 auto; width: 100%;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--white); border: 1px solid var(--gray-200);
+    padding: 6px 16px; border-radius: 50px;
+    font-size: .8rem; font-weight: 600; color: var(--green);
+    margin-bottom: 22px; box-shadow: var(--shadow-sm);
+    opacity: 0; animation: fadeUp .6s .1s forwards;
+  }
+  .hero-badge .dot { width: 8px; height: 8px; background: var(--green-light); border-radius: 50%; animation: pulse 2s infinite; }
+
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .6; transform: scale(1.3); }
+  }
+
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 700; line-height: 1.05;
+    color: var(--green-dark);
+    margin-bottom: 10px;
+    opacity: 0; animation: fadeUp .6s .2s forwards;
+  }
+  .hero-title span { color: var(--blue-dark); font-style: italic; }
+
+  .hero-subtitle {
+    font-size: clamp(.95rem, 1.5vw, 1.1rem);
+    color: var(--gray-600); line-height: 1.7;
+    max-width: 480px; margin-bottom: 36px;
+    opacity: 0; animation: fadeUp .6s .3s forwards;
+  }
+
+  .hero-btns {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    opacity: 0; animation: fadeUp .6s .4s forwards;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--green), var(--green-light));
+    color: #fff; border: none;
+    padding: 14px 30px; border-radius: 50px;
+    font-family: inherit; font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: transform .2s, box-shadow .2s;
+    text-decoration: none; display: inline-block;
+    box-shadow: 0 4px 20px rgba(26,143,94,.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(26,143,94,.45); }
+
+  .btn-secondary {
+    background: var(--white); color: var(--green-dark);
+    border: 2px solid var(--green);
+    padding: 13px 28px; border-radius: 50px;
+    font-family: inherit; font-size: 1rem; font-weight: 600;
+    cursor: pointer; transition: background .2s, color .2s, transform .2s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-secondary:hover { background: var(--green-xlight); transform: translateY(-2px); }
+
+  .hero-stats {
+    display: flex; gap: 28px; flex-wrap: wrap;
+    margin-top: 44px; padding-top: 32px;
+    border-top: 1px solid var(--gray-200);
+    opacity: 0; animation: fadeUp .6s .5s forwards;
+  }
+  .stat-item .num {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem; font-weight: 700; color: var(--green-dark);
+    line-height: 1;
+  }
+  .stat-item .label { font-size: .8rem; color: var(--gray-600); margin-top: 3px; }
+
+  /* Hero illustration side */
+  .hero-visual {
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; animation: fadeUp .7s .4s forwards;
+  }
+  .hero-card-stack {
+    position: relative; width: 340px; height: 420px;
+  }
+  .hc {
+    position: absolute; border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg); background: #fff;
+    transition: transform .3s;
+  }
+  .hc-main {
+    width: 280px; height: 340px;
+    top: 40px; left: 30px;
+    background: linear-gradient(145deg, var(--green), var(--blue-dark));
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    color: #fff;
+  }
+  .hc-main svg { width: 72px; height: 72px; opacity: .9; }
+  .hc-main .hc-name { font-family:'Fraunces',serif; font-size: 1.6rem; font-weight:700; }
+  .hc-main .hc-sub { font-size: .8rem; opacity:.8; text-align:center; padding: 0 20px; }
+  .hc-float {
+    width: 160px; height: 72px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+    background: #fff;
+  }
+  .hc-float-icon { width: 38px; height: 38px; border-radius: 10px; display:flex;align-items:center;justify-content:center; flex-shrink:0; }
+  .hc-float .hf-title { font-size:.75rem; font-weight:700; color:var(--gray-800); }
+  .hc-float .hf-sub { font-size:.68rem; color:var(--gray-600); }
+  .hc-f1 { bottom:0; left:0; animation: float1 4s ease-in-out infinite; }
+  .hc-f2 { top:0; right:0; animation: float2 4s ease-in-out infinite .8s; }
+
+  @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(10px)} }
+
+  /* ─── SECTION BASE ─────────────────────────────── */
+  section { padding: 90px 6vw; }
+  .container { max-width: 1180px; margin: 0 auto; }
+
+  .section-label {
+    display: inline-block;
+    font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700; line-height: 1.2;
+    color: var(--green-dark); margin-bottom: 14px;
+  }
+  .section-desc {
+    font-size: 1rem; color: var(--gray-600); line-height: 1.7;
+    max-width: 580px;
+  }
+
+  /* ─── MASALAH ──────────────────────────────────── */
+  #masalah { background: var(--off-white); }
+
+  .problems-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    margin-top: 48px;
+  }
+
+  .problem-card {
+    background: #fff; border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius); padding: 32px 28px;
+    transition: transform .3s, box-shadow .3s, border-color .3s;
+    position: relative; overflow: hidden;
+  }
+  .problem-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, #e05a5a, #e8944a);
+    border-radius: 2px 2px 0 0;
+  }
+  .problem-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: #e8944a44; }
+
+  .problem-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: #fdf0ec; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+  }
+  .problem-icon svg { width: 28px; height: 28px; }
+  .problem-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--gray-800); margin-bottom: 10px; }
+  .problem-card p { font-size: .9rem; color: var(--gray-600); line-height: 1.65; }
+
+  /* ─── SOLUSI ───────────────────────────────────── */
+  #solusi {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--blue-dark) 100%);
+    color: #fff; position: relative; overflow: hidden;
+  }
+  #solusi::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .solusi-inner {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+
+  .solusi-left .section-label { color: #7de3b8; }
+  .solusi-left .section-title { color: #fff; }
+  .solusi-left .section-desc { color: rgba(255,255,255,.75); max-width: none; }
+
+  .solusi-points { margin-top: 32px; display: flex; flex-direction: column; gap: 18px; }
+  .solusi-point {
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .solusi-point-icon {
+    width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+    background: rgba(255,255,255,.15);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .solusi-point-icon svg { width: 18px; height: 18px; }
+  .solusi-point-text h4 { font-size: .95rem; font-weight: 700; color: #fff; margin-bottom: 3px; }
+  .solusi-point-text p { font-size: .85rem; color: rgba(255,255,255,.7); line-height: 1.6; }
+
+  .solusi-right {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .solusi-stat {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+    border-radius: var(--radius); padding: 24px 20px;
+    backdrop-filter: blur(10px);
+    transition: background .3s, transform .3s;
+  }
+  .solusi-stat:hover { background: rgba(255,255,255,.18); transform: translateY(-4px); }
+  .solusi-stat .ss-num {
+    font-family: 'Fraunces', serif; font-size: 2.2rem; font-weight: 700; color: #7de3b8;
+    line-height: 1;
+  }
+  .solusi-stat .ss-label { font-size: .8rem; color: rgba(255,255,255,.7); margin-top: 6px; }
+
+  /* ─── FITUR ────────────────────────────────────── */
+  #fitur { background: var(--white); }
+
+  .features-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+    margin-top: 48px;
+  }
+
+  .feature-card {
+    border: 1.5px solid var(--gray-200); border-radius: var(--radius-xl);
+    padding: 36px 32px; background: #fff;
+    transition: transform .3s, box-shadow .3s, border-color .3s;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--green); }
+
+  .feature-icon-wrap {
+    width: 60px; height: 60px; border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .fi-green { background: linear-gradient(135deg, #d9f4ea, #b2e8d4); }
+  .fi-blue  { background: linear-gradient(135deg, #d3ecf8, #a8d9f2); }
+  .fi-teal  { background: linear-gradient(135deg, #d2f0f0, #a8e4e4); }
+  .fi-lime  { background: linear-gradient(135deg, #e2f4d3, #c5e9a6); }
+
+  .feature-icon-wrap svg { width: 30px; height: 30px; }
+
+  .feature-card h3 { font-size: 1.15rem; font-weight: 700; color: var(--green-dark); }
+  .feature-card p { font-size: .9rem; color: var(--gray-600); line-height: 1.65; }
+  .feature-tag {
+    display: inline-block; margin-top: 4px;
+    background: var(--green-xlight); color: var(--green);
+    font-size: .75rem; font-weight: 600; padding: 4px 12px; border-radius: 50px;
+    align-self: flex-start;
+  }
+
+  /* ─── KEUNGGULAN ────────────────────────────────── */
+  #keunggulan { background: var(--off-white); }
+
+  .advantages-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    margin-top: 48px;
+  }
+  .advantage-card {
+    background: #fff; border-radius: var(--radius); padding: 28px 22px; text-align: center;
+    border: 1.5px solid var(--gray-200);
+    transition: transform .3s, box-shadow .3s, border-color .3s;
+  }
+  .advantage-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--green); }
+  .adv-icon {
+    width: 62px; height: 62px; border-radius: 50%;
+    background: var(--green-xlight);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+  }
+  .adv-icon svg { width: 30px; height: 30px; }
+  .advantage-card h3 { font-size: 1rem; font-weight: 700; color: var(--green-dark); margin-bottom: 8px; }
+  .advantage-card p { font-size: .85rem; color: var(--gray-600); line-height: 1.6; }
+
+  /* ─── CARA KERJA ────────────────────────────────── */
+  #cara-kerja { background: #fff; }
+
+  .steps-row {
+    display: flex; gap: 0; margin-top: 52px; position: relative;
+    align-items: flex-start;
+  }
+  .steps-row::before {
+    content: ''; position: absolute;
+    top: 36px; left: 15%; right: 15%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    border-radius: 1px;
+  }
+
+  .step {
+    flex: 1; text-align: center; padding: 0 20px;
+    position: relative;
+  }
+  .step-num {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green), var(--blue));
+    color: #fff; font-family: 'Fraunces', serif;
+    font-size: 1.6rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 6px 20px rgba(26,143,94,.3);
+    transition: transform .3s;
+    position: relative; z-index: 1;
+  }
+  .step:hover .step-num { transform: scale(1.12); }
+  .step h3 { font-size: 1.05rem; font-weight: 700; color: var(--green-dark); margin-bottom: 8px; }
+  .step p { font-size: .88rem; color: var(--gray-600); line-height: 1.6; }
+
+  /* ─── CTA ───────────────────────────────────────── */
+  #cta {
+    background: linear-gradient(135deg, var(--green) 0%, var(--blue-dark) 100%);
+    text-align: center; padding: 90px 6vw;
+    position: relative; overflow: hidden;
+  }
+  #cta::before {
+    content:''; position:absolute; width:600px; height:600px; border-radius:50%;
+    background:rgba(255,255,255,.06); top:-200px; left:-100px;
+  }
+  #cta::after {
+    content:''; position:absolute; width:400px; height:400px; border-radius:50%;
+    background:rgba(255,255,255,.06); bottom:-150px; right:-80px;
+  }
+  .cta-inner { position:relative; z-index:2; max-width:640px; margin:0 auto; }
+  .cta-inner .section-label { color:#7de3b8; }
+  .cta-inner .section-title { color:#fff; margin-bottom:16px; font-size:clamp(1.9rem,4vw,3rem); }
+  .cta-inner .section-desc { color:rgba(255,255,255,.78); margin:0 auto 36px; max-width:500px; text-align:center; }
+  .cta-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+
+  .btn-white {
+    background:#fff; color:var(--green-dark);
+    border:none; padding:15px 32px; border-radius:50px;
+    font-family:inherit; font-size:1rem; font-weight:700;
+    cursor:pointer; transition:transform .2s, box-shadow .2s;
+    text-decoration:none; display:inline-block;
+    box-shadow:0 4px 20px rgba(0,0,0,.18);
+  }
+  .btn-white:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.22); }
+
+  .btn-outline-white {
+    background:transparent; color:#fff;
+    border:2px solid rgba(255,255,255,.6);
+    padding:13px 30px; border-radius:50px;
+    font-family:inherit; font-size:1rem; font-weight:600;
+    cursor:pointer; transition:background .2s, border-color .2s, transform .2s;
+    text-decoration:none; display:inline-block;
+  }
+  .btn-outline-white:hover { background:rgba(255,255,255,.12); border-color:#fff; transform:translateY(-2px); }
+
+  /* ─── FOOTER ────────────────────────────────────── */
+  footer {
+    background: var(--green-dark); color: rgba(255,255,255,.6);
+    padding: 40px 6vw;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+  .footer-logo { font-family:'Fraunces',serif; font-size:1.2rem; font-weight:700; color:#fff; }
+  .footer-logo span { color:#7de3b8; }
+  footer p { font-size:.85rem; }
+
+  /* ─── ANIMATIONS ─────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity .65s ease, transform .65s ease;
+  }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .reveal-delay-1 { transition-delay:.1s; }
+  .reveal-delay-2 { transition-delay:.2s; }
+  .reveal-delay-3 { transition-delay:.3s; }
+  .reveal-delay-4 { transition-delay:.4s; }
+
+  /* ─── MOBILE ─────────────────────────────────────── */
+  @media(max-width:900px) {
+    .hero-inner { grid-template-columns:1fr; gap:40px; }
+    .hero-visual { display:none; }
+    .problems-grid { grid-template-columns:1fr; }
+    .solusi-inner { grid-template-columns:1fr; gap:40px; }
+    .solusi-right { grid-template-columns:1fr 1fr; }
+    .features-grid { grid-template-columns:1fr; }
+    .advantages-grid { grid-template-columns:1fr 1fr; }
+    .steps-row { flex-direction:column; align-items:center; gap:32px; }
+    .steps-row::before { display:none; }
+    .nav-links, .nav-cta { display:none; }
+    .hamburger { display:flex; }
+  }
+  @media(max-width:560px) {
+    .advantages-grid { grid-template-columns:1fr; }
+    .solusi-right { grid-template-columns:1fr; }
+    section { padding:60px 5vw; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" href="#">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/>
+        <path d="M12 8v8M8 12h8"/>
+      </svg>
+    </div>
+    MAS BERGA
+  </a>
+  <ul class="nav-links">
+    <li><a href="#masalah">Masalah</a></li>
+    <li><a href="#fitur">Fitur</a></li>
+    <li><a href="#cara-kerja">Cara Kerja</a></li>
+    <li><a href="#keunggulan">Keunggulan</a></li>
+  </ul>
+  <a class="nav-cta" href="mas-berga-app.html">Mulai Sekarang</a>
+  <button class="hamburger" onclick="document.querySelector('.nav-links').style.display='flex'" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-blob blob-1"></div>
+  <div class="hero-blob blob-2"></div>
+  <div class="hero-blob blob-3"></div>
+
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Inovasi Layanan Kesehatan Primer
+      </div>
+      <h1 class="hero-title">MAS<br><span>BERGA</span></h1>
+      <p class="hero-subtitle">
+        Menghubungkan Masyarakat dan Puskesmas dalam Sistem Layanan Kesehatan yang <strong>Cepat</strong>, <strong>Cerdas</strong>, dan <strong>Terintegrasi</strong>.
+      </p>
+      <div class="hero-btns">
+        <a href="mas-berga-app.html" class="btn-primary">✦ Mulai Sekarang</a>
+        <a href="#fitur" class="btn-secondary">Pelajari Lebih Lanjut →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="num">1</div><div class="label">Puskesmas Terintegrasi</div></div>
+        <div class="stat-item"><div class="num">4+</div><div class="label">Layanan Utama</div></div>
+        <div class="stat-item"><div class="num">24/7</div><div class="label">Respon Siaga</div></div>
+        <div class="stat-item"><div class="num">AI</div><div class="label">Asisten Kesehatan</div></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <!-- Float card 2 (top-right) -->
+        <div class="hc hc-float hc-f2">
+          <div class="hc-float-icon" style="background:#e8f7f1;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a8f5e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 0113 18.69a19.5 19.5 0 01-6-6A19.79 19.79 0 013.12 6.18 2 2 0 015.11 4h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.91 11.09a16 16 0 006 6z"/></svg>
+          </div>
+          <div><div class="hf-title">Smart Calling</div><div class="hf-sub">Aktif 24/7</div></div>
+        </div>
+        <!-- Main card -->
+        <div class="hc hc-main">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/>
+            <path d="M12 8v8M8 12h8"/>
+          </svg>
+          <div class="hc-name">MAS BERGA</div>
+          <div class="hc-sub">Masyarakat Bersama<br>Puskesmas Kebonsari, Tuban</div>
+        </div>
+        <!-- Float card 1 (bottom-left) -->
+        <div class="hc hc-float hc-f1">
+          <div class="hc-float-icon" style="background:#d3ecf8;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b9eca" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div><div class="hf-title">Real-Time Status</div><div class="hf-sub">Layanan Live</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MASALAH -->
+<section id="masalah">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Mengapa Ini Penting</span>
+      <h2 class="section-title">Masalah yang Dihadapi<br>Masyarakat Kita</h2>
+      <p class="section-desc">Akses ke layanan kesehatan yang berkualitas masih menjadi tantangan nyata bagi masyarakat di sekitar Puskesmas.</p>
+    </div>
+    <div class="problems-grid">
+      <div class="problem-card reveal reveal-delay-1">
+        <div class="problem-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#e05a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+          </svg>
+        </div>
+        <h3>Sulit Mengakses Layanan</h3>
+        <p>Masyarakat kesulitan mengetahui jadwal, antrean, dan jenis layanan yang tersedia di Puskesmas secara real-time.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-2">
+        <div class="problem-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#e8944a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <h3>Respons yang Lambat</h3>
+        <p>Saat kondisi darurat, sulitnya menghubungi ambulance atau tenaga kesehatan menyebabkan keterlambatan penanganan yang kritis.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-3">
+        <div class="problem-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#e05a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <h3>Informasi Tidak Jelas</h3>
+        <p>Keterbatasan informasi mengenai obat-obatan, jadwal dokter, dan prosedur pelayanan membuat masyarakat bingung.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUSI -->
+<section id="solusi">
+  <div class="container">
+    <div class="solusi-inner">
+      <div class="solusi-left reveal">
+        <span class="section-label">Solusi Kami</span>
+        <h2 class="section-title">MAS BERGA Hadir sebagai Jawaban</h2>
+        <p class="section-desc">Platform digital terintegrasi yang menghubungkan masyarakat langsung dengan Puskesmas Kebonsari, Tuban secara cepat, mudah, dan transparan.</p>
+        <div class="solusi-points">
+          <div class="solusi-point">
+            <div class="solusi-point-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#7de3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="solusi-point-text">
+              <h4>Sistem Terintegrasi</h4>
+              <p>Semua layanan terhubung dalam satu platform — dari panggilan darurat hingga informasi antrean.</p>
+            </div>
+          </div>
+          <div class="solusi-point">
+            <div class="solusi-point-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#7de3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <div class="solusi-point-text">
+              <h4>Respons Cepat</h4>
+              <p>Sistem notifikasi real-time memastikan setiap permintaan layanan ditangani segera dan efisien.</p>
+            </div>
+          </div>
+          <div class="solusi-point">
+            <div class="solusi-point-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#7de3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <div class="solusi-point-text">
+              <h4>Mudah Digunakan</h4>
+              <p>Antarmuka sederhana dan intuitif yang dapat digunakan oleh semua kalangan tanpa perlu keahlian teknis.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="solusi-right reveal reveal-delay-2">
+        <div class="solusi-stat">
+          <div class="ss-num">100%</div>
+          <div class="ss-label">Berbasis Puskesmas Lokal Kebonsari, Tuban</div>
+        </div>
+        <div class="solusi-stat">
+          <div class="ss-num">&lt; 2 mnt</div>
+          <div class="ss-label">Waktu Respons Rata-rata Layanan Darurat</div>
+        </div>
+        <div class="solusi-stat">
+          <div class="ss-num">0 kertas</div>
+          <div class="ss-label">Proses Administrasi Digital Penuh</div>
+        </div>
+        <div class="solusi-stat">
+          <div class="ss-num">AI</div>
+          <div class="ss-label">Asisten Kesehatan Cerdas 24/7</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FITUR UTAMA -->
+<section id="fitur">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:0;">
+      <span class="section-label">Fitur Utama</span>
+      <h2 class="section-title">Semua yang Anda Butuhkan<br>dalam Satu Aplikasi</h2>
+      <p class="section-desc" style="margin:0 auto;">Dirancang khusus untuk kebutuhan layanan kesehatan primer masyarakat Kebonsari, Tuban.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon-wrap fi-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a8f5e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 0113 18.69a19.5 19.5 0 01-6-6A19.79 19.79 0 013.12 6.18 2 2 0 015.11 4h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.91 11.09a16 16 0 006 6z"/>
+          </svg>
+        </div>
+        <h3>Smart Calling</h3>
+        <p>Hubungi tenaga kesehatan, ambulance, atau Puskesmas secara langsung hanya dengan satu ketukan. Tersedia 24 jam penuh, 7 hari seminggu untuk kondisi darurat.</p>
+        <span class="feature-tag">🚨 Darurat</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon-wrap fi-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3b9eca" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <h3>Respons Real-Time</h3>
+        <p>Pantau status layanan secara langsung — dari konfirmasi permintaan hingga kedatangan petugas. Notifikasi otomatis memastikan Anda selalu terinformasi.</p>
+        <span class="feature-tag" style="background:#d3ecf8;color:#1e6a8e;">📡 Live Status</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon-wrap fi-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a8a8a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 8v4l3 3"/>
+            <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <h3>AI Asisten Awal</h3>
+        <p>Asisten kecerdasan buatan membantu melakukan triase gejala awal, memberikan saran pertolongan pertama, dan mengarahkan ke layanan yang tepat sebelum bertemu dokter.</p>
+        <span class="feature-tag" style="background:#d2f0f0;color:#1a8a8a;">🤖 AI Powered</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-4">
+        <div class="feature-icon-wrap fi-lime">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3d7a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <h3>Informasi Layanan Lengkap</h3>
+        <p>Akses informasi stok obat, jadwal dokter, nomor antrean, dan prosedur pendaftaran secara digital — tidak perlu datang langsung hanya untuk bertanya.</p>
+        <span class="feature-tag" style="background:#e2f4d3;color:#3d7a1a;">📋 Info Lengkap</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEUNGGULAN -->
+<section id="keunggulan">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <span class="section-label">Keunggulan</span>
+      <h2 class="section-title">Kenapa MAS BERGA?</h2>
+      <p class="section-desc" style="margin:0 auto;">Dirancang dengan memahami kebutuhan nyata masyarakat dan kapasitas Puskesmas lokal.</p>
+    </div>
+    <div class="advantages-grid">
+      <div class="advantage-card reveal reveal-delay-1">
+        <div class="adv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a8f5e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+            <path d="M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+        </div>
+        <h3>Mudah Digunakan</h3>
+        <p>Antarmuka yang intuitif, cocok untuk semua usia — dari lansia hingga generasi muda.</p>
+      </div>
+      <div class="advantage-card reveal reveal-delay-2">
+        <div class="adv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a8f5e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <h3>Respons Cepat</h3>
+        <p>Sistem otomatis memastikan setiap permintaan direspons dalam hitungan detik, bukan jam.</p>
+      </div>
+      <div class="advantage-card reveal reveal-delay-3">
+        <div class="adv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a8f5e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <h3>Transparan</h3>
+        <p>Setiap proses layanan terdokumentasi dan dapat dipantau secara real-time oleh pengguna.</p>
+      </div>
+      <div class="advantage-card reveal reveal-delay-4">
+        <div class="adv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a8f5e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <h3>Berbasis Lokal</h3>
+        <p>Dibangun spesifik untuk Puskesmas Kebonsari, Tuban — memahami kebutuhan komunitas setempat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARA KERJA -->
+<section id="cara-kerja">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <span class="section-label">Cara Kerja</span>
+      <h2 class="section-title">Mudah dalam 3 Langkah</h2>
+      <p class="section-desc" style="margin:0 auto;">Dari memilih layanan hingga mendapatkan penanganan — semuanya dalam genggaman tangan Anda.</p>
+    </div>
+    <div class="steps-row">
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">1</div>
+        <h3>Pilih Layanan</h3>
+        <p>Buka aplikasi MAS BERGA, pilih jenis layanan yang Anda butuhkan — darurat, konsultasi, informasi, atau antrean.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">2</div>
+        <h3>Kirim Permintaan</h3>
+        <p>Isi detail singkat kebutuhan Anda. Sistem AI kami membantu memastikan permintaan diarahkan ke petugas yang tepat.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">3</div>
+        <h3>Layanan Diproses</h3>
+        <p>Puskesmas menerima dan memproses permintaan Anda. Pantau status secara real-time hingga layanan selesai.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner">
+    <span class="section-label">Bergabung Sekarang</span>
+    <h2 class="section-title">Wujudkan Layanan Kesehatan yang Lebih Baik Bersama</h2>
+    <p class="section-desc">MAS BERGA adalah inovasi milik kita bersama. Dukung transformasi layanan kesehatan primer di Kebonsari, Tuban.</p>
+    <div class="cta-btns">
+      <a href="mas-berga-app.html" class="btn-white">✦ Gunakan MAS BERGA Sekarang</a>
+      <a href="#" class="btn-outline-white">Dukung Inovasi Lokal →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">MAS <span>BERGA</span></div>
+  <p>Masyarakat Bersama Puskesmas Kebonsari, Tuban &copy; 2024</p>
+  <p>Inovasi Layanan Kesehatan Primer</p>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 30);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
